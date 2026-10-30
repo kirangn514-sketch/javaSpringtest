@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student App: Project Guide</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #dde2ea;
+    --bg: #f7f8fb;
+    --card: #ffffff;
+    --accent: #2555c7;
+    --accent-soft: #e8efff;
+    --ok: #17724a;
+    --warn: #9a5b00;
+    --bad: #b42323;
+    --code-bg: #14181f;
+    --code-ink: #e6edf7;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+  nav {
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    background: #fff; border-right: 1px solid var(--line); padding: 24px 18px;
+  }
+  nav h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  nav ol { list-style: none; padding: 0; margin: 0 0 24px; }
+  nav li { margin: 4px 0; }
+  nav a { color: var(--ink); text-decoration: none; font-size: 14px; display: block; padding: 4px 8px; border-radius: 6px; }
+  nav a:hover { background: var(--accent-soft); color: var(--accent); }
+  main { padding: 40px 56px 80px; max-width: 980px; }
+  header.hero {
+    background: linear-gradient(135deg, #2555c7, #4b7bec); color: #fff;
+    padding: 36px 40px; border-radius: 14px; margin-bottom: 36px;
+  }
+  header.hero h1 { margin: 0 0 8px; font-size: 32px; }
+  header.hero p { margin: 0; opacity: .92; font-size: 16px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px 32px; margin-bottom: 28px; }
+  section h2 { margin-top: 0; font-size: 24px; border-bottom: 2px solid var(--accent-soft); padding-bottom: 10px; }
+  section h3 { font-size: 18px; margin: 28px 0 8px; color: var(--accent); }
+  p, li { font-size: 15px; }
+  code {
+    font-family: Consolas, "Courier New", monospace; font-size: 13.5px;
+    background: #f0f3f8; padding: 1px 6px; border-radius: 4px; border: 1px solid #e3e8f0;
+  }
+  pre {
+    background: var(--code-bg); color: var(--code-ink); padding: 16px 18px; border-radius: 8px;
+    overflow-x: auto; font-size: 13px; line-height: 1.5;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 18px; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 11px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: #f4f6fa; font-weight: 600; }
+  .callout { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 6px; margin: 16px 0; }
+  .callout.warn { border-color: var(--warn); background: #fff6e6; }
+  .callout.ok { border-color: var(--ok); background: #e7f6ee; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; }
+  .flow .box { background: var(--accent-soft); border: 1px solid #bfd0f7; border-radius: 8px; padding: 8px 12px; font-size: 14px; font-weight: 600; }
+  .flow .arrow { color: var(--muted); font-size: 18px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-right: 6px; }
+  .get { background: #e0f2ea; color: var(--ok); }
+  .post { background: #e6eeff; color: var(--accent); }
+  .put { background: #fff1d6; color: var(--warn); }
+  .delete { background: #fde3e3; color: var(--bad); }
+  .role { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-right: 4px; }
+  .role.admin { background: #e6eeff; color: var(--accent); }
+  .role.hr { background: #fff1d6; color: var(--warn); }
+  .role.emp { background: #e0f2ea; color: var(--ok); }
+  ul.steps { padding-left: 20px; }
+  ul.steps li { margin: 6px 0; }
+  footer { color: var(--muted); font-size: 13px; text-align: center; padding: 24px; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    nav { position: static; height: auto; }
+    main { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav>
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#overview">1. Overview</a></li>
+    <li><a href="#structure">2. Project structure</a></li>
+    <li><a href="#request-flow">3. How a request flows</a></li>
+    <li><a href="#layers">4. The layers</a></li>
+    <li><a href="#roles">5. Roles and permissions</a></li>
+    <li><a href="#auth">6. Login and the cookie</a></li>
+    <li><a href="#cookie">7. ResponseCookie explained</a></li>
+    <li><a href="#security">8. Security rules</a></li>
+    <li><a href="#courses">9. Courses and mapping tables</a></li>
+    <li><a href="#config">10. Configuration and seed accounts</a></li>
+    <li><a href="#database">11. Database</a></li>
+    <li><a href="#endpoints">12. Endpoints</a></li>
+    <li><a href="#errors">13. Errors</a></li>
+    <li><a href="#testing">14. Testing</a></li>
+    <li><a href="#running">15. Running it</a></li>
+    <li><a href="#limits">16. Limits and next steps</a></li>
+    <li><a href="#glossary">17. Glossary</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <h1>Student App: Project Guide</h1>
+  <p>A Spring Boot REST API for students and courses. Login uses a JWT stored in an HttpOnly cookie, access is controlled by three roles (ADMIN, HR, EMPLOYEE), and the data is kept in SQLite.</p>
+</header>
+
+<!-- ============================================================ -->
+<section id="overview">
+  <h2>1. Overview</h2>
+  <p>This application manages students, users, courses, and tech stacks through a REST API. Users log in, and what they may do depends on their role. Data is saved in one SQLite file, <code>student.db</code>.</p>
+
+  <h3>Technology</h3>
+  <table>
+    <tr><th>Part</th><th>Choice</th><th>Why</th></tr>
+    <tr><td>Language</td><td>Java 21</td><td>Records, text blocks, and modern syntax</td></tr>
+    <tr><td>Framework</td><td>Spring Boot 3.5.16</td><td>Latest 3.x release. Spring handles wiring, web, and security.</td></tr>
+    <tr><td>Build</td><td>Maven</td><td>Declares dependencies in <code>pom.xml</code></td></tr>
+    <tr><td>Database</td><td>SQLite via <code>sqlite-jdbc</code> 3.49.1.0</td><td>One file, no server to install</td></tr>
+    <tr><td>ORM</td><td>Hibernate 6.6 with Spring Data JPA</td><td>Maps Java classes to tables</td></tr>
+    <tr><td>Validation</td><td>Jakarta Bean Validation</td><td>Declarative rules such as <code>@NotBlank</code></td></tr>
+    <tr><td>Security</td><td>Spring Security, JWT (RS256), BCrypt, method security</td><td>Login, tokens, password hashing, and role checks</td></tr>
+    <tr><td>Tests</td><td>JUnit 5, Mockito, Spring MockMvc</td><td>Unit and integration tests</td></tr>
+  </table>
+
+  <h3>Main features</h3>
+  <ul class="steps">
+    <li>Register, log in, log out, and see the current user.</li>
+    <li>Three roles, with the rules in section 5. Admins manage users.</li>
+    <li>Create, list, read, update, and delete students. Link a student to an employee account.</li>
+    <li>Manage courses, tech stacks, and the links between them and students.</li>
+    <li>Consistent JSON responses and error codes.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<section id="structure">
+  <h2>2. Project structure</h2>
+<pre><code>CURD/
+├── pom.xml                         Maven build file and dependencies
+├── student.db                      SQLite database (created on first run)
+├── docs/
+│   ├── API.md                      API reference and Postman guide
+│   ├── project-guide.html          This document
+│   └── postman/
+│       └── student-app.postman_collection.json
+└── src/
+    ├── main/
+    │   ├── resources/
+    │   │   └── application.properties
+    │   └── java/com/example/studentapp/
+    │       ├── StudentAppApplication.java   Entry point
+    │       ├── controller/     HTTP endpoints (students, users, courses, tech stacks, auth)
+    │       ├── service/        Business logic
+    │       ├── repository/     Database access
+    │       ├── entity/         Database tables (Student, AppUser, Course, TechStack, Role)
+    │       ├── dto/            Request and response shapes (+ ApiResponse)
+    │       ├── mapper/         Converts between DTOs and entities
+    │       ├── exception/      Custom errors and the global error handler
+    │       ├── config/         Security, JWT keys and settings, first-user seeding
+    │       └── security/       Ownership check used by @PreAuthorize
+    └── test/
+        ├── resources/application-test.properties
+        └── java/com/example/studentapp/
+            ├── support/TestUsers.java                 Creates and logs in test users
+            ├── service/StudentServiceTest.java        Unit tests
+            └── controller/                            Integration tests (auth, students, RBAC, courses, users)</code></pre>
+
+  <div class="callout">
+    <strong>Rule of thumb:</strong> each package has one job. Controllers handle HTTP, services hold the rules,
+    repositories talk to the database, and mappers convert between shapes. Code only calls the layer directly below it.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="request-flow">
+  <h2>3. How a request flows</h2>
+  <p>Here is a <strong>create student</strong> request from an ADMIN:</p>
+
+  <div class="flow">
+    <span class="box">Client sends JSON + cookie</span><span class="arrow">→</span>
+    <span class="box">Security filters: token, then role rule</span><span class="arrow">→</span>
+    <span class="box">Controller</span><span class="arrow">→</span>
+    <span class="box">Validation (@Valid)</span><span class="arrow">→</span>
+    <span class="box">Service (transaction)</span><span class="arrow">→</span>
+    <span class="box">Mapper</span><span class="arrow">→</span>
+    <span class="box">Repository</span><span class="arrow">→</span>
+    <span class="box">SQLite</span>
+  </div>
+
+  <p>The response goes back the same way, as a DTO wrapped in <code>ApiResponse</code>:</p>
+
+  <div class="flow">
+    <span class="box">Entity from database</span><span class="arrow">→</span>
+    <span class="box">Mapper</span><span class="arrow">→</span>
+    <span class="box">Response DTO</span><span class="arrow">→</span>
+    <span class="box">ApiResponse wrapper</span><span class="arrow">→</span>
+    <span class="box">Jackson turns it into JSON</span>
+  </div>
+
+  <h3>Step by step</h3>
+  <ol class="steps">
+    <li><strong>Token check:</strong> the security filter reads the <code>access_token</code> cookie and verifies the JWT signature and expiry. If that fails, the request stops with 401.</li>
+    <li><strong>Role check:</strong> the token's <code>role</code> claim becomes an authority such as <code>ROLE_ADMIN</code>. The URL rules in <code>SecurityConfig</code> decide whether that role may call this path. If not, the request stops with 403.</li>
+    <li><strong>Method check:</strong> for <code>GET /students/{id}</code>, a <code>@PreAuthorize</code> rule runs next. It lets an employee through only if they own the student.</li>
+    <li><strong>Dispatcher</strong> finds the controller method that matches the URL and HTTP method.</li>
+    <li><strong>Jackson</strong> converts the JSON body into a request DTO record.</li>
+    <li><strong>@Valid</strong> checks the rules on the DTO. A failure becomes a 400.</li>
+    <li><strong>Service</strong> runs inside a transaction and calls the mapper and repository.</li>
+    <li><strong>Repository</strong> saves or loads the entity. Hibernate writes SQL to SQLite.</li>
+    <li><strong>Response</strong> is converted to a DTO, wrapped in <code>ApiResponse</code>, and written as JSON.</li>
+  </ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="layers">
+  <h2>4. The layers</h2>
+
+  <h3>Entity: <code>entity/</code></h3>
+  <p>An entity is a Java class that maps to a database table. Each field is a column, and each object is a row.</p>
+  <table>
+    <tr><th>Class</th><th>Table</th><th>Purpose</th></tr>
+    <tr><td><code>AppUser</code></td><td><code>app_users</code></td><td>Login accounts, with a password hash and a role</td></tr>
+    <tr><td><code>Student</code></td><td><code>students</code></td><td>Student records, with an optional owner (an <code>AppUser</code>)</td></tr>
+    <tr><td><code>Course</code></td><td><code>courses</code></td><td>Courses, with links to tech stacks and students</td></tr>
+    <tr><td><code>TechStack</code></td><td><code>tech_stacks</code></td><td>Technologies such as Java or React</td></tr>
+    <tr><td><code>Role</code></td><td>(stored as text in <code>app_users.role</code>)</td><td>The enum ADMIN, HR, EMPLOYEE</td></tr>
+  </table>
+  <table>
+    <tr><th>Annotation</th><th>What it does</th></tr>
+    <tr><td><code>@Entity</code>, <code>@Table</code></td><td>Marks the class as a table mapping and sets the table name</td></tr>
+    <tr><td><code>@Id</code>, <code>@GeneratedValue(IDENTITY)</code></td><td>Primary key that the database assigns</td></tr>
+    <tr><td><code>@Column(nullable = false, unique = true)</code></td><td>Required column, and a database rule that no two rows share the value</td></tr>
+    <tr><td><code>@Enumerated(STRING)</code></td><td>Stores the enum name (<code>ADMIN</code>) instead of a number</td></tr>
+    <tr><td><code>@ColumnDefault</code></td><td>Default value for existing rows when a column is added (used for <code>role</code>)</td></tr>
+    <tr><td><code>@ManyToOne</code></td><td>Many students can point to one owner user</td></tr>
+    <tr><td><code>@ManyToMany</code> with <code>@JoinTable</code></td><td>Course links to tech stacks and students, stored in mapping tables</td></tr>
+    <tr><td><code>@PrePersist</code>, <code>@PreUpdate</code></td><td>Set <code>createdAt</code> and <code>updatedAt</code> in UTC, and default the role to EMPLOYEE</td></tr>
+  </table>
+  <p>Entities are never returned from the API. The controllers return DTOs. The entity has no <code>setId()</code>, because the database owns the ID.</p>
+
+  <h3>Repository: <code>repository/</code></h3>
+  <p>A repository is an interface. Spring Data writes the implementation at startup.</p>
+  <ul class="steps">
+    <li><code>StudentRepository</code>: adds <code>findByOwnerId</code>, used when a user is deleted.</li>
+    <li><code>AppUserRepository</code>: <code>findByUsername</code>, <code>existsByUsername</code>, and <code>existsByUsernameAndIdNot</code> (checks a rename does not clash with another user).</li>
+    <li><code>CourseRepository</code>: <code>findByStudentsId</code> and <code>findByTechStacksId</code>. These search through the mapping tables, and they let a delete clean up links.</li>
+    <li><code>TechStackRepository</code>: name checks for uniqueness.</li>
+  </ul>
+
+  <h3>DTO: <code>dto/</code></h3>
+  <p>A DTO (Data Transfer Object) is the shape of data the API accepts or returns. It is separate from the entity, so the database can change without breaking clients. They are Java <strong>records</strong>: immutable classes with generated constructors and accessors.</p>
+  <ul class="steps">
+    <li><code>StudentRequestDTO</code>, <code>StudentResponseDTO</code>: student input and output. The response includes <code>ownerUserId</code>.</li>
+    <li><code>CreateUserRequestDTO</code>, <code>UpdateUserRequestDTO</code>: admin input for users. The update password is optional.</li>
+    <li><code>UserResponseDTO</code>: <code>id</code>, <code>username</code>, <code>role</code>. Never the password.</li>
+    <li><code>CourseRequestDTO</code>, <code>CourseResponseDTO</code>, <code>TechStackRequestDTO</code>, <code>TechStackResponseDTO</code>.</li>
+    <li><code>AssignOwnerRequestDTO</code>: the body that links a student to a user.</li>
+    <li><code>AuthRequestDTO</code>: username and password for register and login.</li>
+    <li><code>ApiResponse&lt;T&gt;</code>: the wrapper for every response.</li>
+  </ul>
+
+  <h3>Mapper: <code>mapper/</code></h3>
+  <p>Mappers copy fields between DTOs and entities. <code>StudentMapper</code>, <code>UserMapper</code>, <code>CourseMapper</code>, and <code>TechStackMapper</code> are each a <code>@Component</code> with no dependencies. The course mapper reads the lazy collections, so it must run inside a transaction.</p>
+
+  <h3>Service: <code>service/</code></h3>
+  <ul class="steps">
+    <li><code>AuthService</code>: registration (always EMPLOYEE), login, and token creation. The token includes the role.</li>
+    <li><code>StudentService</code>: student CRUD, owner assignment, and removing a student from courses on delete.</li>
+    <li><code>UserService</code>: admin user management. Deleting a user unlinks their students first.</li>
+    <li><code>CourseService</code>: course CRUD and linking tech stacks and students.</li>
+    <li><code>TechStackService</code>: tech-stack CRUD. Deleting one removes it from every course.</li>
+    <li>Dependencies arrive through the constructor, as <code>private final</code> fields. Writes use <code>@Transactional</code>. Reads use <code>readOnly = true</code>.</li>
+  </ul>
+
+  <h3>Controller: <code>controller/</code></h3>
+  <p>Controllers map URLs to methods and set the status code. They contain no rules beyond passing input to the service and returning its output. <code>StudentController</code> also carries the <code>@PreAuthorize</code> annotation on <code>GET /{id}</code>.</p>
+
+  <h3>Exception handling: <code>exception/</code></h3>
+  <p><code>GlobalExceptionHandler</code> is a <code>@RestControllerAdvice</code>. It turns exceptions into the same <code>ApiResponse</code> shape. Notably, <code>AccessDeniedException</code> becomes 403 (without this, the catch-all would return 500). Stack traces go to the log only.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="roles">
+  <h2>5. Roles and permissions</h2>
+  <p>Each user has one role. The role is written into the login token, and the security rules check it on every request.</p>
+
+  <table>
+    <tr><th>Role</th><th>Meaning</th><th>Can</th><th>Cannot</th></tr>
+    <tr>
+      <td><span class="role admin">ADMIN</span></td>
+      <td>Full access</td>
+      <td>Everything: students, users, courses, tech stacks, links, owner assignment</td>
+      <td>Nothing is blocked</td>
+    </tr>
+    <tr>
+      <td><span class="role hr">HR</span></td>
+      <td>Read-only access to students</td>
+      <td>List all students, read any student by ID, see own profile</td>
+      <td>Create, update, or delete students. Anything about users, courses, or tech stacks.</td>
+    </tr>
+    <tr>
+      <td><span class="role emp">EMPLOYEE</span></td>
+      <td>Access to own records only</td>
+      <td>Read a student by ID when the student is linked to their account. See own profile.</td>
+      <td>List all students. Read another user's student. Anything about users, courses, or tech stacks.</td>
+    </tr>
+  </table>
+
+  <h3>How the rules are enforced</h3>
+  <ol class="steps">
+    <li><strong>URL rules</strong> in <code>SecurityConfig</code> decide by path and method, for example <code>GET /api/v1/students</code> needs ADMIN or HR. This is easy to audit in one place.</li>
+    <li><strong>Method rules</strong> (<code>@PreAuthorize</code>) add checks that depend on the data. <code>GET /students/{id}</code> uses <code>hasAnyRole('ADMIN','HR') or @studentAccess.isOwner(#id, authentication)</code>.</li>
+    <li><strong>Ownership</strong>: <code>StudentAccess.isOwner</code> compares the student's owner username with the logged-in username. A missing student counts as "not owned", so an employee gets 403 instead of learning which IDs exist.</li>
+  </ol>
+
+  <div class="callout warn">
+    <strong>A role change takes effect at the next login.</strong> The role is stored in the token. A user whose role was changed keeps the old role until the token expires (30 minutes) or they log in again.
+  </div>
+
+  <div class="callout">
+    <strong>Why the URL rule and the method rule both exist:</strong> the URL rule is a fast, simple gate. The method rule runs after the controller is chosen, so it can read the student and check the owner. Using both keeps the simple rules visible in one file and the data-dependent rule next to the code that needs it.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="auth">
+  <h2>6. Login and the cookie</h2>
+  <p>This section explains how a login becomes a cookie, and how that cookie is checked on each request.</p>
+
+  <h3>The token</h3>
+  <p>A JWT is three Base64 parts separated by dots: <code>header.payload.signature</code>.</p>
+  <ul class="steps">
+    <li><strong>Header:</strong> the algorithm, <code>RS256</code>.</li>
+    <li><strong>Payload (claims):</strong> <code>iss</code> (issuer, "student-app"), <code>sub</code> (the username), <code>iat</code> (issued at), <code>exp</code> (expiry, 30 minutes later), and <code>role</code> (ADMIN, HR, or EMPLOYEE).</li>
+    <li><strong>Signature:</strong> made with the RSA private key. Anyone can read the payload. Only the server can create a valid signature.</li>
+  </ul>
+
+  <h3>Login, step by step</h3>
+  <div class="flow">
+    <span class="box">POST /login</span><span class="arrow">→</span>
+    <span class="box">Find user</span><span class="arrow">→</span>
+    <span class="box">Check BCrypt hash</span><span class="arrow">→</span>
+    <span class="box">Sign JWT with role</span><span class="arrow">→</span>
+    <span class="box">Set-Cookie header</span>
+  </div>
+  <ol class="steps">
+    <li>The client sends username and password.</li>
+    <li><code>AuthService.login</code> loads the user. An unknown username throws <code>InvalidCredentialsException</code>.</li>
+    <li><code>passwordEncoder.matches</code> checks the password against the stored BCrypt hash. A wrong password throws the same exception.</li>
+    <li><code>generateToken</code> builds the claims, including <code>role</code>, and signs them.</li>
+    <li><code>AuthController.login</code> puts the token in the <code>Set-Cookie</code> header.</li>
+    <li>The JSON body contains no token, only <code>data: null</code>.</li>
+  </ol>
+
+  <h3>Every later request, step by step</h3>
+  <div class="flow">
+    <span class="box">Browser sends cookie</span><span class="arrow">→</span>
+    <span class="box">Read access_token</span><span class="arrow">→</span>
+    <span class="box">Verify signature and expiry</span><span class="arrow">→</span>
+    <span class="box">role claim becomes ROLE_*</span><span class="arrow">→</span>
+    <span class="box">URL and method rules</span>
+  </div>
+  <ol class="steps">
+    <li>The browser sends the cookie automatically.</li>
+    <li><code>resolveTokenFromCookie</code> finds the <code>access_token</code> value. This replaces the default, which reads the <code>Authorization</code> header.</li>
+    <li>The <code>JwtDecoder</code> checks the RS256 signature, then the expiry.</li>
+    <li>The converter reads the <code>role</code> claim and grants <code>ROLE_ADMIN</code>, <code>ROLE_HR</code>, or <code>ROLE_EMPLOYEE</code>.</li>
+    <li>If the token is missing or invalid, the entry point returns 401. If the role is not allowed, the access-denied handler returns 403.</li>
+  </ol>
+
+  <h3>Logout</h3>
+  <p>Logout sends a cookie with an empty value and <code>Max-Age=0</code>. The browser deletes it. The server keeps no session, so a copied token still works until it expires.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="cookie">
+  <h2>7. ResponseCookie explained</h2>
+  <p>This is the code that builds the login cookie, from <code>AuthController.java</code>:</p>
+
+<pre><code>private ResponseCookie buildCookie(String value, Duration maxAge) {
+    return ResponseCookie.from(SecurityConfig.AUTH_COOKIE_NAME, value)
+            .httpOnly(true)
+            .secure(jwtProperties.cookieSecure())
+            .sameSite("Strict")
+            .path("/")
+            .maxAge(maxAge)
+            .build();
+}</code></pre>
+
+  <h3>What <code>ResponseCookie</code> is</h3>
+  <p><code>ResponseCookie</code> is a Spring class that builds a <code>Set-Cookie</code> header. The standard <code>jakarta.servlet.http.Cookie</code> class cannot set <code>SameSite</code>, so Spring provides this builder. Calling <code>.toString()</code> produces the header text, which the login method sends with <code>HttpHeaders.SET_COOKIE</code>.</p>
+
+  <p>For a login, the header looks like this:</p>
+<pre><code>Set-Cookie: access_token=eyJhbGciOiJSUzI1NiJ9...; Max-Age=1800; Expires=...; Path=/; HttpOnly; Secure; SameSite=Strict</code></pre>
+
+  <h3>Each setting</h3>
+  <table>
+    <tr><th>Method call</th><th>Header output</th><th>What it does</th><th>Why it matters</th></tr>
+    <tr>
+      <td><code>from(name, value)</code></td><td><code>access_token=...</code></td>
+      <td>Sets the cookie name and value</td>
+      <td>The value is the signed JWT</td>
+    </tr>
+    <tr>
+      <td><code>httpOnly(true)</code></td><td><code>HttpOnly</code></td>
+      <td>Hides the cookie from JavaScript</td>
+      <td>An injected script (XSS) cannot read the token</td>
+    </tr>
+    <tr>
+      <td><code>secure(...)</code></td><td><code>Secure</code></td>
+      <td>Sent only over HTTPS</td>
+      <td>The token never travels unencrypted. Controlled by <code>app.jwt.cookie-secure</code>.</td>
+    </tr>
+    <tr>
+      <td><code>sameSite("Strict")</code></td><td><code>SameSite=Strict</code></td>
+      <td>Not sent on requests started from another site</td>
+      <td>Main protection against CSRF. This is why CSRF tokens are turned off.</td>
+    </tr>
+    <tr>
+      <td><code>path("/")</code></td><td><code>Path=/</code></td>
+      <td>Sent to every URL on the site</td>
+      <td>All API endpoints need it</td>
+    </tr>
+    <tr>
+      <td><code>maxAge(duration)</code></td><td><code>Max-Age=1800</code></td>
+      <td>Lifetime in seconds</td>
+      <td>Matches the token's expiry. Logout uses <code>Duration.ZERO</code>, giving <code>Max-Age=0</code>, which deletes the cookie.</td>
+    </tr>
+  </table>
+
+  <div class="callout ok">
+    <strong>Why a cookie instead of localStorage?</strong> Any script on the page can read <code>localStorage</code>. An HttpOnly cookie cannot be read by JavaScript at all.
+  </div>
+
+  <div class="callout warn">
+    <strong>Local HTTP testing:</strong> the <code>Secure</code> flag means browsers and Postman drop the cookie over plain <code>http://</code>. Start the app with <code>--app.jwt.cookie-secure=false</code> for local testing. Production keeps it <code>true</code> and uses HTTPS.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="security">
+  <h2>8. Security rules</h2>
+  <p><code>config/SecurityConfig.java</code> defines these rules:</p>
+  <table>
+    <tr><th>Rule</th><th>Setting</th><th>Reason</th></tr>
+    <tr><td>Passwords</td><td>BCrypt via <code>PasswordEncoder</code></td><td>Slow and salted. Plain or MD5 hashes are not acceptable.</td></tr>
+    <tr><td>Token signing</td><td>RS256 with a 2048-bit RSA key pair</td><td>Only the server holds the private key</td></tr>
+    <tr><td>Key storage</td><td>Generated in memory at startup</td><td>No secret in the repository. Restarting logs everyone out.</td></tr>
+    <tr><td>Session</td><td><code>STATELESS</code></td><td>No server-side session. Each request carries its own token.</td></tr>
+    <tr><td>Public endpoints</td><td>POST <code>/auth/register</code>, <code>/auth/login</code>, <code>/auth/logout</code></td><td>Needed before a user can log in</td></tr>
+    <tr><td>Admin only</td><td><code>/users/**</code>, <code>/courses/**</code>, <code>/tech-stacks/**</code>, and all student changes</td><td>Managing accounts and reference data is restricted</td></tr>
+    <tr><td>Default</td><td><code>anyRequest().authenticated()</code></td><td>New endpoints are protected unless opened on purpose</td></tr>
+    <tr><td>Public registration</td><td>Always creates EMPLOYEE</td><td>Nobody can make themselves an admin by registering</td></tr>
+    <tr><td>401 body</td><td>Custom entry point</td><td>Returns the standard <code>ApiResponse</code> wrapper</td></tr>
+    <tr><td>403 body</td><td>Custom access-denied handler</td><td>Same wrapper, with <code>errorCode: FORBIDDEN</code></td></tr>
+    <tr><td>CSRF</td><td>Disabled</td><td>Relies on <code>SameSite=Strict</code></td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="courses">
+  <h2>9. Courses and mapping tables</h2>
+  <p>A course can teach several tech stacks and can have several enrolled students. Each of these two relationships is many-to-many, so each has a mapping table with one row per pair.</p>
+
+  <div class="flow">
+    <span class="box">courses</span><span class="arrow">←→</span>
+    <span class="box">course_tech_stack</span><span class="arrow">←→</span>
+    <span class="box">tech_stacks</span>
+  </div>
+  <div class="flow">
+    <span class="box">courses</span><span class="arrow">←→</span>
+    <span class="box">course_student</span><span class="arrow">←→</span>
+    <span class="box">students</span>
+  </div>
+
+  <h3>How the code maps them</h3>
+  <pre><code>@ManyToMany
+@JoinTable(
+        name = "course_tech_stack",
+        joinColumns = @JoinColumn(name = "course_id"),
+        inverseJoinColumns = @JoinColumn(name = "tech_stack_id"))
+private Set&lt;TechStack&gt; techStacks = new LinkedHashSet&lt;&gt;();</code></pre>
+  <ul class="steps">
+    <li><code>@ManyToMany</code> with <code>@JoinTable</code> creates the mapping table and its rows.</li>
+    <li><code>Course</code> is the owning side. Adding to its set writes a row. Removing from the set deletes the row.</li>
+    <li>Sets ignore duplicates, so linking the same tech stack twice changes nothing.</li>
+  </ul>
+
+  <h3>Keeping the mapping tables clean</h3>
+  <p>SQLite does not enforce foreign keys here, so deleting a row would leave dangling mapping rows. The services remove them:</p>
+  <table>
+    <tr><th>Action</th><th>What the service does first</th></tr>
+    <tr><td>Delete a student</td><td>Removes the student from every course (<code>course_student</code>)</td></tr>
+    <tr><td>Delete a tech stack</td><td>Removes it from every course (<code>course_tech_stack</code>)</td></tr>
+    <tr><td>Delete a user</td><td>Unlinks that user's students (<code>students.owner_user_id</code> set to null)</td></tr>
+    <tr><td>Delete a course</td><td>Nothing extra. Hibernate removes the course's own mapping rows.</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="config">
+  <h2>10. Configuration and seed accounts</h2>
+  <p><code>src/main/resources/application.properties</code> holds the settings:</p>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Meaning</th></tr>
+    <tr><td><code>spring.datasource.url</code></td><td><code>jdbc:sqlite:student.db</code></td><td>The database file, relative to the folder you start the app from</td></tr>
+    <tr><td><code>spring.datasource.driver-class-name</code></td><td><code>org.sqlite.JDBC</code></td><td>The SQLite driver class</td></tr>
+    <tr><td><code>spring.datasource.hikari.maximum-pool-size</code></td><td><code>1</code></td><td>One connection. SQLite allows one writer at a time.</td></tr>
+    <tr><td><code>spring.jpa.database-platform</code></td><td><code>SQLiteDialect</code></td><td>Tells Hibernate to write SQLite-compatible SQL</td></tr>
+    <tr><td><code>spring.jpa.hibernate.ddl-auto</code></td><td><code>update</code></td><td>Creates and adds tables and columns at startup. Use migrations in production.</td></tr>
+    <tr><td><code>spring.jpa.show-sql</code></td><td><code>true</code></td><td>Prints every SQL statement (turn off later)</td></tr>
+    <tr><td><code>spring.jpa.open-in-view</code></td><td><code>false</code></td><td>Closes the database session after the service returns</td></tr>
+    <tr><td><code>app.jwt.expiry-minutes</code></td><td><code>30</code></td><td>Token lifetime. Must be 15 to 60, checked at startup.</td></tr>
+    <tr><td><code>app.jwt.cookie-secure</code></td><td><code>true</code></td><td>Sets the <code>Secure</code> cookie flag</td></tr>
+    <tr><td><code>app.seed.*-password</code></td><td><code>${SEED_*_PASSWORD:}</code></td><td>Passwords for the first accounts, read from environment variables</td></tr>
+  </table>
+
+  <h3>First accounts (seeding)</h3>
+  <p><code>DataSeeder</code> runs at startup and creates three accounts if they do not exist yet:</p>
+  <table>
+    <tr><th>Environment variable</th><th>Username</th><th>Role</th></tr>
+    <tr><td><code>SEED_ADMIN_PASSWORD</code></td><td><code>admin</code></td><td>ADMIN</td></tr>
+    <tr><td><code>SEED_HR_PASSWORD</code></td><td><code>hr_user</code></td><td>HR</td></tr>
+    <tr><td><code>SEED_EMPLOYEE_PASSWORD</code></td><td><code>employee</code></td><td>EMPLOYEE</td></tr>
+  </table>
+  <ul class="steps">
+    <li>Passwords are never written in the code or in the properties file. They come only from the environment.</li>
+    <li>If a variable is empty or shorter than 8 characters, that account is skipped and a warning is logged.</li>
+    <li>An account that already exists is never changed, so setting a password later does not overwrite it.</li>
+    <li>The HR username is <code>hr_user</code>, not <code>hr</code>, because usernames need at least 3 characters.</li>
+  </ul>
+
+  <h3>Overriding a setting from the command line</h3>
+<pre><code>mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8090 --app.jwt.cookie-secure=false"</code></pre>
+  <p>Command-line values override the file, so you don't need to edit the file to test locally.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="database">
+  <h2>11. Database</h2>
+  <h3>Tables</h3>
+  <table>
+    <tr><th>Table</th><th>Columns</th></tr>
+    <tr><td><code>students</code></td><td><code>id</code>, <code>name</code>, <code>subject</code>, <code>address</code>, <code>age</code>, <code>owner_user_id</code> (nullable link to <code>app_users</code>), <code>created_at</code>, <code>updated_at</code></td></tr>
+    <tr><td><code>app_users</code></td><td><code>id</code>, <code>username</code> (unique), <code>password_hash</code>, <code>role</code> (ADMIN, HR, or EMPLOYEE; default EMPLOYEE), <code>created_at</code>, <code>updated_at</code></td></tr>
+    <tr><td><code>courses</code></td><td><code>id</code>, <code>name</code> (unique), <code>description</code>, <code>created_at</code>, <code>updated_at</code></td></tr>
+    <tr><td><code>tech_stacks</code></td><td><code>id</code>, <code>name</code> (unique), <code>created_at</code>, <code>updated_at</code></td></tr>
+    <tr><td><code>course_tech_stack</code></td><td><code>course_id</code>, <code>tech_stack_id</code> (composite primary key)</td></tr>
+    <tr><td><code>course_student</code></td><td><code>course_id</code>, <code>student_id</code> (composite primary key)</td></tr>
+  </table>
+
+  <h3>Upgrading an existing database</h3>
+  <p>With <code>ddl-auto=update</code>, the first start after this change adds the new column and tables:</p>
+  <ul class="steps">
+    <li><code>app_users.role</code> is added with the default <code>'EMPLOYEE'</code>, so existing users become employees.</li>
+    <li><code>students.owner_user_id</code> is added as empty, so existing students have no owner until an admin links them.</li>
+    <li>The three mapping tables and the two new tables are created.</li>
+    <li>Existing rows are kept.</li>
+  </ul>
+
+  <h3>Notes on SQLite</h3>
+  <ul class="steps">
+    <li><strong>IDs:</strong> <code>IDENTITY</code> maps to SQLite's <code>INTEGER PRIMARY KEY</code>. An ID can be reused after the highest-numbered row is deleted.</li>
+    <li><strong>Timestamps:</strong> stored as epoch milliseconds, because SQLite has no datetime type. In DB Browser: <code>SELECT datetime(created_at/1000, 'unixepoch') FROM students;</code></li>
+    <li><strong>Foreign keys:</strong> Hibernate does not create them for SQLite here, and SQLite does not enforce them by default. The services clean up links instead (section 9).</li>
+    <li><strong>One writer:</strong> with one connection, concurrent writes queue up instead of failing with "database is locked".</li>
+  </ul>
+
+  <h3>Real database vs test database</h3>
+  <table>
+    <tr><th>Run</th><th>Database file</th><th>Schema</th></tr>
+    <tr><td>Running the app</td><td><code>student.db</code> in the project folder</td><td>Kept between restarts (<code>update</code>)</td></tr>
+    <tr><td>Running tests</td><td><code>target/test-student.db</code></td><td>Rebuilt for each test run (<code>create-drop</code>)</td></tr>
+  </table>
+  <p>Tests never touch <code>student.db</code>. You can confirm this by comparing the file's checksum before and after <code>mvn test</code>.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="endpoints">
+  <h2>12. Endpoints</h2>
+  <p>All paths start with <code>/api/v1</code>. Full examples are in <a href="API.md">API.md</a>, and the Postman collection is in <code>docs/postman/</code>.</p>
+
+  <h3>Auth</h3>
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Who</th><th>Success</th></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/auth/register</code></td><td>Anyone (creates EMPLOYEE)</td><td>201</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/auth/login</code></td><td>Anyone</td><td>200 + cookie</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/auth/logout</code></td><td>Anyone</td><td>204</td></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/auth/me</code></td><td>Any logged-in role</td><td>200</td></tr>
+  </table>
+
+  <h3>Students</h3>
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Who</th><th>Success</th></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/students</code></td><td>ADMIN</td><td>201 + Location</td></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/students</code></td><td>ADMIN, HR</td><td>200</td></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/students/{id}</code></td><td>ADMIN, HR, EMPLOYEE (own only)</td><td>200</td></tr>
+    <tr><td><span class="tag put">PUT</span></td><td><code>/students/{id}</code></td><td>ADMIN</td><td>200</td></tr>
+    <tr><td><span class="tag delete">DELETE</span></td><td><code>/students/{id}</code></td><td>ADMIN</td><td>204</td></tr>
+    <tr><td><span class="tag put">PUT</span></td><td><code>/students/{id}/owner</code></td><td>ADMIN</td><td>200</td></tr>
+  </table>
+
+  <h3>Users (ADMIN)</h3>
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Success</th></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/users</code></td><td>200</td></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/users/{id}</code></td><td>200</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/users</code></td><td>201 + Location</td></tr>
+    <tr><td><span class="tag put">PUT</span></td><td><code>/users/{id}</code></td><td>200</td></tr>
+    <tr><td><span class="tag delete">DELETE</span></td><td><code>/users/{id}</code></td><td>204</td></tr>
+  </table>
+
+  <h3>Tech stacks (ADMIN)</h3>
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Success</th></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/tech-stacks</code>, <code>/tech-stacks/{id}</code></td><td>200</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/tech-stacks</code></td><td>201 + Location</td></tr>
+    <tr><td><span class="tag put">PUT</span></td><td><code>/tech-stacks/{id}</code></td><td>200</td></tr>
+    <tr><td><span class="tag delete">DELETE</span></td><td><code>/tech-stacks/{id}</code></td><td>204</td></tr>
+  </table>
+
+  <h3>Courses (ADMIN)</h3>
+  <table>
+    <tr><th>Method</th><th>Path</th><th>Success</th></tr>
+    <tr><td><span class="tag get">GET</span></td><td><code>/courses</code>, <code>/courses/{id}</code></td><td>200</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/courses</code></td><td>201 + Location</td></tr>
+    <tr><td><span class="tag put">PUT</span></td><td><code>/courses/{id}</code></td><td>200</td></tr>
+    <tr><td><span class="tag delete">DELETE</span></td><td><code>/courses/{id}</code></td><td>204</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/courses/{id}/tech-stacks/{techStackId}</code></td><td>200</td></tr>
+    <tr><td><span class="tag delete">DELETE</span></td><td><code>/courses/{id}/tech-stacks/{techStackId}</code></td><td>200</td></tr>
+    <tr><td><span class="tag post">POST</span></td><td><code>/courses/{id}/students/{studentId}</code></td><td>200</td></tr>
+    <tr><td><span class="tag delete">DELETE</span></td><td><code>/courses/{id}/students/{studentId}</code></td><td>200</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="errors">
+  <h2>13. Errors</h2>
+  <p>Every error has the same body shape, with <code>success: false</code> and a stable <code>errorCode</code>.</p>
+  <table>
+    <tr><th>Status</th><th>errorCode</th><th>Cause</th></tr>
+    <tr><td>400</td><td><code>VALIDATION_ERROR</code></td><td>A field broke a rule. The message lists each field.</td></tr>
+    <tr><td>400</td><td><code>MALFORMED_REQUEST</code></td><td>Body is missing or not valid JSON</td></tr>
+    <tr><td>400</td><td><code>INVALID_PARAMETER</code></td><td>Path value has the wrong type, such as <code>/students/abc</code></td></tr>
+    <tr><td>401</td><td><code>UNAUTHORIZED</code></td><td>No cookie, expired token, or tampered token</td></tr>
+    <tr><td>401</td><td><code>INVALID_CREDENTIALS</code></td><td>Wrong username or password</td></tr>
+    <tr><td>403</td><td><code>FORBIDDEN</code></td><td>Logged in, but this role may not do it, or an employee asked for a student they do not own</td></tr>
+    <tr><td>404</td><td><code>STUDENT_NOT_FOUND</code>, <code>USER_NOT_FOUND</code>, <code>COURSE_NOT_FOUND</code>, <code>TECH_STACK_NOT_FOUND</code></td><td>The record does not exist</td></tr>
+    <tr><td>409</td><td><code>USERNAME_TAKEN</code></td><td>Username already registered</td></tr>
+    <tr><td>409</td><td><code>NAME_TAKEN</code></td><td>Course or tech-stack name already used</td></tr>
+    <tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>Unexpected server error. Details are in the log only.</td></tr>
+  </table>
+  <div class="callout">
+    <strong>401 vs 403:</strong> 401 means the server does not know who you are. 403 means it knows who you are, but your role does not allow the action.
+  </div>
+  <div class="callout">
+    <strong>Why the same message for a wrong username and a wrong password?</strong> Different messages would let an attacker find which usernames exist. Both return "Invalid username or password".
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="testing">
+  <h2>14. Testing</h2>
+  <p>Run all tests with <code>mvn test</code>. The suite has <strong>62 tests</strong>, all passing.</p>
+  <table>
+    <tr><th>Class</th><th>Type</th><th>Tests</th><th>What it proves</th></tr>
+    <tr><td><code>StudentServiceTest</code></td><td>Unit (Mockito)</td><td>7</td><td>Student business rules, with repositories replaced by mocks</td></tr>
+    <tr><td><code>AuthControllerIntegrationTest</code></td><td>Integration (MockMvc)</td><td>8</td><td>Register, duplicate username, cookie flags, wrong password, <code>/me</code>, logout</td></tr>
+    <tr><td><code>StudentControllerIntegrationTest</code></td><td>Integration</td><td>8</td><td>Student CRUD as admin, owner assignment, 401 without a cookie, forged token rejected</td></tr>
+    <tr><td><code>RbacIntegrationTest</code></td><td>Integration</td><td>19</td><td>Every role against each kind of endpoint, including employee ownership and 403 vs 404</td></tr>
+    <tr><td><code>CourseControllerIntegrationTest</code></td><td>Integration</td><td>11</td><td>Course CRUD, linking, enrollment, and cleanup when a student or tech stack is deleted</td></tr>
+    <tr><td><code>UserControllerIntegrationTest</code></td><td>Integration</td><td>9</td><td>User create, update (password optional), duplicate names, role changes, delete unlinks students</td></tr>
+  </table>
+
+  <h3>How the test users are made</h3>
+  <p><code>TestUsers</code> creates a user with the role a test needs, then logs in through the real <code>/api/v1/auth/login</code>. Each test class sets up the users it needs, so the role rules are tested against real tokens.</p>
+
+  <div class="callout ok">
+    <strong>Earlier bug caught by the tests:</strong> the first run failed with "Jwt and Opaque Token are the only supported formats". The fix was <code>.jwt(...)</code> on the resource server, so Spring knows the tokens are JWTs. Tests found it before any user did.
+  </div>
+  <div class="callout ok">
+    <strong>Another caught before release:</strong> the seeded HR username <code>hr</code> is shorter than the 3-character minimum. The first live run showed <code>hr</code> could not log in. The account is now <code>hr_user</code>.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="running">
+  <h2>15. Running it</h2>
+  <ol class="steps">
+    <li>Install Java 21 and point <code>JAVA_HOME</code> at the JDK.</li>
+    <li>Set the three seed passwords, each at least 8 characters.
+      <pre><code>SEED_ADMIN_PASSWORD=AdminPass123
+SEED_HR_PASSWORD=HrPass1234
+SEED_EMPLOYEE_PASSWORD=EmpPass1234</code></pre>
+    </li>
+    <li>Start the app from the project folder:
+      <pre><code>mvn spring-boot:run -Dspring-boot.run.arguments="--app.jwt.cookie-secure=false"</code></pre>
+    </li>
+    <li>The API is at <code>http://localhost:8080/api/v1</code>. Use <code>--server.port=XXXX</code> if 8080 is in use.</li>
+    <li>Run tests with <code>mvn test</code>.</li>
+    <li>Open <code>student.db</code> in DB Browser for SQLite to inspect the tables.</li>
+    <li>Import the Postman collection. Set the three passwords in its variables, then run the folders in order (<a href="API.md">API.md</a>, section 8).</li>
+  </ol>
+  <div class="callout warn">
+    Restarting the app creates new signing keys. All existing logins stop working, so log in again.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="limits">
+  <h2>16. Limits and next steps</h2>
+  <table>
+    <tr><th>Limit</th><th>Next step</th></tr>
+    <tr><td>Signing key changes on restart</td><td>Load a fixed key from Azure Key Vault</td></tr>
+    <tr><td>Logout doesn't revoke tokens on the server</td><td>Add a deny list of revoked token IDs, or shorten token lifetime</td></tr>
+    <tr><td>Role changes apply at next login</td><td>Check the role in the database on each request, or revoke old tokens when a role changes</td></tr>
+    <tr><td>Roles are fixed to three</td><td>Move to a permissions table if more fine-grained rules are needed</td></tr>
+    <tr><td>Foreign keys not enforced by SQLite</td><td>Keep the service-level cleanup, or move to a database that enforces them</td></tr>
+    <tr><td>Schema changes via <code>ddl-auto=update</code></td><td>Use Flyway or Liquibase migration scripts</td></tr>
+    <tr><td>No audit trail; no <code>created_by</code> or <code>is_deleted</code></td><td>Add audit logging and soft delete, as the organization standard asks</td></tr>
+    <tr><td>No CORS configuration</td><td>Allow the React frontend's origin with credentials enabled</td></tr>
+    <tr><td>No coverage report</td><td>Add JaCoCo and track the 80% target</td></tr>
+    <tr><td>No Swagger / OpenAPI page</td><td>Add springdoc-openapi to generate interactive docs</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="glossary">
+  <h2>17. Glossary</h2>
+  <table>
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td>Bean</td><td>An object that Spring creates and manages, usually from an annotation such as <code>@Service</code></td></tr>
+    <tr><td>Dependency injection</td><td>Spring passes objects in through constructors instead of the class creating them</td></tr>
+    <tr><td>DTO</td><td>Data Transfer Object: the shape of data in or out of the API</td></tr>
+    <tr><td>Entity</td><td>A Java class mapped to a database table</td></tr>
+    <tr><td>Mapping table</td><td>A table that links two others in a many-to-many relationship, such as <code>course_student</code></td></tr>
+    <tr><td>Transaction</td><td>A group of database operations that all succeed or all roll back</td></tr>
+    <tr><td>JWT</td><td>A signed token that carries claims such as the username, role, and expiry</td></tr>
+    <tr><td>RS256</td><td>Signing with an RSA private key. Anyone can verify with the public key.</td></tr>
+    <tr><td>BCrypt</td><td>A slow, salted hash for passwords</td></tr>
+    <tr><td>Role</td><td>A group of permissions. Here: ADMIN, HR, EMPLOYEE.</td></tr>
+    <tr><td>Authority</td><td>Spring's name for a permission that is checked, such as <code>ROLE_ADMIN</code></td></tr>
+    <tr><td>Cookie</td><td>A small value the server asks the browser to store and send back</td></tr>
+    <tr><td>HttpOnly</td><td>A cookie flag that hides the cookie from JavaScript</td></tr>
+    <tr><td>SameSite</td><td>A cookie flag that controls whether cross-site requests carry the cookie</td></tr>
+    <tr><td>CSRF</td><td>Cross-Site Request Forgery: a site tricking the browser into sending a request as the user</td></tr>
+    <tr><td>XSS</td><td>Cross-Site Scripting: injected JavaScript running on your page</td></tr>
+    <tr><td>Stateless</td><td>The server stores no session. Every request must prove who sent it.</td></tr>
+    <tr><td>401 vs 403</td><td>401: not logged in or the login is invalid. 403: logged in but not allowed.</td></tr>
+  </table>
+</section>
+
+<footer>Student App: Project Guide. Generated from the project source code.</footer>
+
+</main>
+</div>
+</body>
+</html>

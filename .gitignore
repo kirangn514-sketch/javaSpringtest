@@ -1,0 +1,10 @@
+# Maven build output
+target/
+
+# Local SQLite database (contains test data and password hashes)
+*.db
+
+# IDE files
+.idea/
+.vscode/
+*.iml
